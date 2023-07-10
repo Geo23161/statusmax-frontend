@@ -37,7 +37,7 @@
 							<div style="flex-grow: 1;">
 								<ion-item fill="outline" mode="md" color="primary">
 									<ion-input required type="number" placeholder="Numéro whatsapp"
-										@ionInput="(e) => (whatsapp = e.target.value)"></ion-input>
+										@ionInput="(e) => (whatsapp = e.target.value as string)"></ion-input>
 								</ion-item>
 							</div>
 						</div>
@@ -73,7 +73,7 @@
 
 							<ion-item fill="outline" mode="md" color="primary">
 								<ion-input required type="number" placeholder="Code de Verification"
-									@ionInput="(e) => (code = e.target.value)"></ion-input>
+									@ionInput="(e) => (code = e.target.value as string)"></ion-input>
 							</ion-item>
 
 						</div>

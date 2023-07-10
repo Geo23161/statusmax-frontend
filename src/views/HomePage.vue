@@ -78,7 +78,7 @@
 					<ion-toolbar>
 						<ion-title>Historique de paiement</ion-title>
 						<ion-buttons slot="end">
-							<ion-button @click="rOpen = false">Fermer</ion-button>
+							<ion-button >Fermer</ion-button>
 						</ion-buttons>
 					</ion-toolbar>
 				</ion-header>
