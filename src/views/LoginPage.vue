@@ -6,14 +6,14 @@
           <div class="header">
             <div class="title_m">
               <div class="img_cont">
-                <img src="../../resources/icon.png" class="img_m" />
+                <img :src="'../../resources/icon.png'" class="img_m" />
               </div>
               <div class="text_m">StatusMax</div>
             </div>
           </div>
           <div class="title_b">Connexion.</div>
           <div class="body_i">
-            <img src="../../img/login.svg" class="img_b" />
+            <img :src="'../../img/login.svg'" class="img_b" />
           </div>
           <div class="form_b">
             <div class="d_sp">

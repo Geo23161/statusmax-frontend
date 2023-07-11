@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header mode="ios" >
       <ion-toolbar>
-        <ion-title> <div style="display : flex; align-items: center; justify-content: center; margin-left: -0.5rem;" > <img style="height: 1.7rem; margin-right: 0.5rem; border-radius: 7px;" src="../../resources/icon.png" /> <div > StatusMax </div> </div> </ion-title>
+        <ion-title> <div style="display : flex; align-items: center; justify-content: center; margin-left: -0.5rem;" > <img style="height: 1.7rem; margin-right: 0.5rem; border-radius: 7px;" :src="'../../resources/icon.png'" /> <div > StatusMax </div> </div> </ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="no_photos" v-else >
                   <div style="display: flex; justify-content: space-around; padding: 0.8rem;" >
-                    <img src="../../img/no_data.svg" style="width: 60%;" />
+                    <img :src="'../../img/no_data.svg'" style="width: 60%;" />
                   </div>
                 </div>
               </div>

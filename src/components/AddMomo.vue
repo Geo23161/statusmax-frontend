@@ -14,7 +14,7 @@
                     Ajoutez un compte mobile money
                 </div>
                 <div class="body_i">
-                    <img src="../../img/momo.svg" class="img_b" />
+                    <img :src="'../../img/momo.svg'" class="img_b" />
                 </div>
                 <div style="text-align: center; padding-top: 0.6rem; padding-bottom: 0.6rem">
                     Avant de continuer, vous devez ajouter un compte momo

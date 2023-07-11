@@ -8,7 +8,7 @@
 		            </div>
 		            <div class="title_m">
 		              <div class="img_cont">
-		                <img src="../../resources/icon.png" class="img_m" />
+		                <img :src="'../../resources/icon.png'" class="img_m" />
 		              </div>
 		              <div class="text_m">StatusMax</div>
 		            </div>

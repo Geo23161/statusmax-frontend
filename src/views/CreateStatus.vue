@@ -4,7 +4,7 @@
 			<ion-toolbar>
 				<ion-title>
 					<div style="display : flex; align-items: center;"> <img style="height: 1.7rem; margin-right: 0.5rem;"
-							src="../../img/whatsapp.png" />
+							:src="'../../img/whatsapp.png'" />
 						<div> Compte Whatsapp </div>
 					</div>
 				</ion-title>
@@ -16,7 +16,7 @@
 					Ajoutez votre numero whatsapp
 				</div>
 				<div class="body_i">
-					<img src="../../img/create.svg" class="img_b" />
+					<img :src="'../../img/create.svg'" class="img_b" />
 				</div>
 				<div style="text-align: center; padding-top: 0.6rem; padding-bottom: 0.6rem">
 					Pour verifier, nous allons envoyer un code sur votre compte
@@ -64,7 +64,7 @@
 					Entrez le code envoyé
 				</div>
 				<div class="body_i">
-					<img src="../../img/create2.svg" class="img_b" />
+					<img :src="'../../img/create2.svg'" class="img_b" />
 				</div>
 
 				<form @submit.prevent="check_code" class="inputs">
@@ -101,7 +101,7 @@
 					Details sur vos statuts whatsapp
 				</div>
 				<div class="body_i">
-					<img src="../../img/create3.svg" class="img_b" />
+					<img :src="'../../img/create3.svg'" class="img_b" />
 				</div>
 				<form @submit.prevent="niv ? validate_inter() : niv++">
 					<ion-list v-if="!niv" :inset="true" mode="ios">

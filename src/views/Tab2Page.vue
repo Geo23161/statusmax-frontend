@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>
           <div style="display : flex; align-items: center; justify-content: center; margin-left: -0.5rem;"> <img
-              style="height: 1.7rem; margin-right: 0.5rem; border-radius: 7px;" src="../../resources/icon.png" />
+              style="height: 1.7rem; margin-right: 0.5rem; border-radius: 7px;" :src="'../../resources/icon.png'" />
             <div> StatusMax </div>
           </div>
         </ion-title>
@@ -79,7 +79,7 @@
           </div>
           <div v-else >
             <div class="my_svg" >
-              <img src="../../img/pay.svg" style="width: 70%;" />
+              <img :src="'../../img/pay.svg'" style="width: 70%;" />
             </div>
             <div style="text-align: center; font-size: 0.9rem; padding-top: 0.3rem;">
               Aucun paiement pour le moment
