@@ -31,7 +31,7 @@
             padding-bottom: 1rem;
           "
         >
-          <img :src="'../../public/img/locat.svg'" style="width: 100%" />
+          <img :src="'../../img/locat.svg'" style="width: 100%" />
         </div>
         <div style="text-align: center; padding: 0.7rem">
           Veuillez entrer le nom de votre quartier ou de votre ville
