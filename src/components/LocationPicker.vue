@@ -47,7 +47,7 @@
               padding-bottom: 1rem;
             "
           >
-            <img :src="'../../public/assets/img/r_city.svg'" style="width: 100%" />
+            <img :src="'../../img/no_data.svg'" style="width: 100%" />
           </div>
           <div style="text-align: center; padding: 0.7rem">
             Aucun lieu trouvé correspondant à votre recherche

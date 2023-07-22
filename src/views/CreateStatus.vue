@@ -126,34 +126,14 @@
 
 
 						</ion-item>
-						<ion-item>
+						<ion-item v-show="false">
 							<ion-input label="Nombres de femmes" :value="girls_num" type="number" required
-								@ionInput="e => girls_num = e.target.value" placeholder="entrez..."></ion-input>
+								placeholder="entrez..."></ion-input>
 
 						</ion-item>
 
 					</ion-list>
 					<ion-list v-else-if="niv == 1" :inset="true" mode="ios">
-						<ion-list-header>
-							<ion-label>Centre d'Interêts acttuels</ion-label>
-						</ion-list-header>
-
-						<div style="padding-left: 1rem; padding-right: 1rem;">
-							<div> Qu'est-ce qui interessent ceux qui suivent vos statuts actuellement? </div>
-							<div style="padding-top: 0.9rem; padding-bottom: 0.3rem;">
-								<ion-item v-for="inter in my_interest" :key="inter.id">
-									<ion-label> {{ inter.name }} </ion-label>
-									<ion-icon slot="start" :icon="aperture"></ion-icon>
-								</ion-item>
-							</div>
-							<div style="padding-bottom: 0.7rem;">
-								<ion-button @click="iOpen = true" mode="ios" color="primary" expand="full"
-									shape="round">Choisir</ion-button>
-							</div>
-						</div>
-
-					</ion-list>
-					<ion-list v-else-if="niv == 2" :inset="true" mode="ios">
 						<ion-list-header>
 							<ion-label>Professions actuelles</ion-label>
 						</ion-list-header>
@@ -173,6 +153,57 @@
 							</div>
 						</div>
 
+					</ion-list>
+					<ion-list v-else-if="niv == 2" :inset="true" mode="ios">
+						<ion-list-header>
+							<ion-label>Photo de profil</ion-label>
+						</ion-list-header>
+
+						<div style="padding-left: 1rem; padding-right: 1rem;">
+							<div> Ajoutez une photo de profil qui sera affichée sur votre page d'audience </div>
+							<div style="padding-top: 0.9rem; padding-bottom: 0.3rem;">
+								<ion-item @click="click_img('add:img')" :detail="true" :detail-icon="eye" button>
+									<ion-thumbnail>
+										<img alt="campagne image" :src="photo"
+											style="margin-right: 0.6rem; border-radius: 15px;" />
+									</ion-thumbnail>
+									<ion-label class="ion-text-wrap">
+										<h3 style="padding-left: 0.8rem;">{{ photo == '../../img/img_no.jpg'
+											? 'Aucune image ajouté' : 'Une image ajoutée' }}</h3>
+
+									</ion-label>
+								</ion-item>
+							</div>
+							<div style="padding-bottom: 0.7rem;">
+								<ion-button fill="outline" @click="click_img('file_add')" v-if="!is_submitting" mode="ios"
+									expand="full" shape="round">
+									<ion-icon :icon="image" slot="start" /> Choisir un fichier
+								</ion-button>
+								<ion-button fill="outline" mode="ios" v-else expand="full" shape="round">
+									<ion-spinner name="dots"></ion-spinner>
+								</ion-button>
+							</div>
+						</div>
+
+					</ion-list>
+					<ion-list v-else-if="niv == 3" :inset="true" mode="ios">
+						<ion-list-header>
+							<ion-label>Quiz d'audience</ion-label>
+						</ion-list-header>
+						<div style="padding-left: 1rem; padding-right: 1rem;">
+							<div> Invitez massivement ceux qui suivent vos statuts à participer au quiz afin de les
+								proposer des contenus qui les interesseront. Partagez en statut </div>
+						</div>
+						<div style="padding-left: 0.6rem; padding-right: 0.6rem;">
+							<div class="editable-div" contenteditable>
+								{{ quiz }}
+							</div>
+							<div style="padding-bottom: 0.7rem;">
+								<ion-button @click="share_quiz()" fill="outline" mode="ios" expand="full" shape="round">
+									<ion-icon :icon="shareSocial" slot="start" /> Inviter
+								</ion-button>
+							</div>
+						</div>
 					</ion-list>
 					<div
 						style="padding-top: 0.3rem; padding-left: 1rem; padding-right: 1rem; display: flex; justify-content: space-between; align-items: center">
@@ -197,12 +228,34 @@
 			</ion-header>
 			<ion-content class="ion-padding"> </ion-content>
 		</ion-modal>
+		<div v-show="false">
+			<photo-provider v-if="photo">
+				<photo-consumer :intro="'Images'" :src="photo">
+					<img :src="photo" :id="'add:img'" style="width: 40vw:" class="view-box" />
+				</photo-consumer>
+			</photo-provider>
+			<input type="file" accept="video/*, image/*" id="file_add" @change="handle_file" />
+		</div>
 		<interest-comp :isOpen="iOpen" @close="iOpen = false" @done="(lis: any) => { my_interest = lis, iOpen = false }" />
 		<prof-comp :isOpen="pOpen" @close="pOpen = false" @done="(lis: any) => { my_profs = lis, pOpen = false }" />
 	</ion-page>
 </template>
 
 <style scoped>
+.editable-div {
+	width: 100%;
+	min-height: 50px;
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid #ccc;
+	outline: none;
+	margin-top: 0.6rem;
+	margin-bottom: 0.9rem;
+	background-color: #f2f2f2;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
 .inputs {
 	padding-top: 1.8rem;
 }
@@ -264,8 +317,8 @@
 }
 
 ion-content {
-    --background: rgb(234, 227, 240);
-  }
+	--background: rgb(234, 227, 240);
+}
 </style>
 
 <script setup lang="ts">
@@ -292,15 +345,17 @@ import {
 	IonSelectOption,
 	IonRange,
 	IonIcon,
-	IonListHeader
+	IonListHeader,
+	IonThumbnail
 } from "@ionic/vue";
-import { arrowBack, location, arrowForward, aperture } from "ionicons/icons";
+import { arrowBack, location, arrowForward, aperture, eye, image, shareSocial } from "ionicons/icons";
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { show_alert, showLoading, access_tok } from "@/global/utils";
 import axios from "axios"
 import InterestComp from "../components/InterestComp.vue";
 import ProfComp from "../components/ProfComp.vue";
+import { Share } from '@capacitor/share';
 
 
 const country = ref("")
@@ -310,13 +365,26 @@ const route = useRoute()
 const router = useRouter()
 const code = ref("")
 const taille = ref()
-const girls_num = ref()
+const girls_num = ref(0)
 const ages = ref({ lower: 25, upper: 40 })
 const my_interest = ref<any[]>([])
 const my_profs = ref<any[]>([])
 const pOpen = ref(false)
 const stp = ref(0);
-const niv = ref(0)
+const niv = ref(0);
+const story = ref(0);
+const quiz = ref("")
+const quizObj = ref()
+const has_share = ref(false)
+const share_quiz = async () => {
+	has_share.value = true
+	try {
+		await Share.share(quizObj.value);
+	} catch (e) {
+		navigator.share(quizObj.value)
+	}
+}
+
 watch(stp, (news, olds) => {
 	if (news >= 3) router.push("/tabs/");
 
@@ -356,7 +424,8 @@ const create_stories = async () => {
 		girls_num: girls_num.value,
 		ages: JSON.stringify(ages.value),
 		interests: JSON.stringify(my_interest.value),
-		professions: JSON.stringify(my_profs.value)
+		professions: JSON.stringify(my_profs.value),
+		media_id: media_id.value
 	}, {
 		headers: {
 			Authorization: `Bearer ${await access_tok(router, load)}`
@@ -364,16 +433,23 @@ const create_stories = async () => {
 	})
 	if (resp.data['done']) {
 		load.dismiss()
+		story.value = resp.data['result']
+		quiz.value = resp.data['quiz']
+		quizObj.value = resp.data['quizObj']
 		if (only_for.value != "") return router.back();
-		router.push("/tabs/")
+		niv.value++;
 	}
 }
 
 const validate_inter = () => {
 	if (niv.value == 1) {
 		niv.value++;
+	} else if (niv.value == 3) {
+		if (!has_share.value) return show_alert("Partagez le lien", "Avant de continuer vous devez partager le lien d'invitation")
+		router.push('/tabs/')
 	} else {
-		if (!my_profs.value.length) return show_alert("Impossible de continuer", "Choisir au moins une professions")
+		if (!my_profs.value.length) return show_alert("Impossible de continuer", "Choisissez au moins une profession")
+		if (photo.value == "") return show_alert("Aucune photo ajoutée", "Veuillez ajouter une photo de profil avant de continuer")
 		create_stories()
 	}
 }
@@ -396,7 +472,13 @@ const check_code = async () => {
 		}
 		stp.value++;
 	}
-	
+
+}
+
+const photo = ref("../../img/img_no.jpg")
+const media_id = ref(0)
+const click_img = (id: string) => {
+	document.getElementById(id)?.click()
 }
 
 const only_for = ref("")
@@ -404,8 +486,8 @@ watch(only_for, (newo, oldo) => {
 	get_details()
 	if (newo == 'whatsapp') stp.value = 0;
 	else if (newo == 'detail') stp.value = 2, niv.value = 0;
-	else if (newo == 'interest') stp.value = 2, niv.value = 1;
-	else if (newo == 'profession') stp.value = 2, niv.value = 2;
+	else if (newo == 'interest') stp.value = 2, niv.value = 2;
+	else if (newo == 'profession') stp.value = 2, niv.value = 1;
 })
 
 const get_details = async () => {
@@ -422,8 +504,36 @@ const get_details = async () => {
 		girls_num.value = data['girls_num']
 		my_interest.value = data['interests']
 		my_profs.value = data['professions']
+		photo.value = data['picture']
 	}
 	load.dismiss()
+}
+const is_submitting = ref(false)
+const ready_image = ref<Blob>()
+watch(ready_image, async (newi, oldi) => {
+	if (newi) {
+		const form = new FormData()
+		form.append('image', newi)
+		form.append('typ', 'profil')
+		const resp = await axios.post('api/submit_media/', form, {
+			headers: {
+				Authorization: `Bearer ${await access_tok(router, undefined)}`,
+				"Content-Type": "multipart/form-data"
+			}
+		})
+		if (resp.data['done']) {
+			photo.value = resp.data['result']['url']
+			media_id.value = resp.data['result']['pk']
+			is_submitting.value = false
+		}
+	}
+}, { deep: true })
+
+const handle_file = (e: any) => {
+	const file = e.target.files[0] as File;
+	if (!file) return 0;
+	is_submitting.value = true;
+	ready_image.value = file;
 }
 
 onIonViewDidEnter(() => {

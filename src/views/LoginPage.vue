@@ -188,7 +188,8 @@ import { Storage } from "@ionic/storage";
 import axios from "axios";
 import {StatusBar} from "@capacitor/status-bar"
 
-StatusBar.setBackgroundColor({color : "#ffc409"})
+StatusBar.setBackgroundColor({color : "#5e17eb"})
+
 const email = ref("");
 const password = ref("");
 const router = useRouter();

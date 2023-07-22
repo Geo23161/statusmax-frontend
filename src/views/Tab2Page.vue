@@ -32,11 +32,20 @@
         </div>
         <div class="ban">
           <div class="myico orange_bg">
-            <ion-icon :icon="people" />
+            <ion-icon :icon="image" />
           </div>
           <div class="ban_cont">
-            <div class="title_b">Tarif par defaut</div>
-            <div class="contentb">{{ payObj['price'] }} FCFA/10vues</div>
+            <div class="title_b">Post image</div>
+            <div class="contentb">{{ payObj['price_image'] }} FCFA/10vues</div>
+          </div>
+        </div>
+        <div class="ban">
+          <div class="myico pu_bg">
+            <ion-icon :icon="camera" />
+          </div>
+          <div class="ban_cont">
+            <div class="title_b">Post video</div>
+            <div class="contentb">{{ payObj['price_video'] }} FCFA/10vues</div>
           </div>
         </div>
         <div class="d_sp mbut">
@@ -101,6 +110,11 @@
 </template>
 
 <style scoped >
+.pu_bg{
+  background: rgba(68, 68, 68, 0.261);
+  color: rgb(68, 68, 68);
+}
+
 .my_svg {
   display: flex;
   justify-content: space-around;
@@ -252,7 +266,7 @@ import { show_alert, show_warn } from '@/global/utils';
 import { access_tok, showLoading } from '@/global/utils';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, onIonViewDidEnter, } from '@ionic/vue';
 import axios from 'axios';
-import { cash, people } from "ionicons/icons";
+import { camera, cash, image, people } from "ionicons/icons";
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 

@@ -36,12 +36,16 @@
               <ion-label>Details de l'audience</ion-label>
             </ion-item>
             <ion-item @click="router.push('/create?only_for=interest')" button>
-              <ion-icon :icon="bonfire" slot="start" />
-              <ion-label>Centre d'Interêts</ion-label>
+              <ion-icon :icon="person" slot="start" />
+              <ion-label>Changer ma photo</ion-label>
             </ion-item>
             <ion-item @click="router.push('/create?only_for=profession')" button>
               <ion-icon :icon="ribbon" slot="start" />
               <ion-label>Professions</ion-label>
+            </ion-item>
+            <ion-item @click="cOpen = true" button>
+              <ion-icon :icon="shareSocial" slot="start" />
+              <ion-label>Inviter mon audience</ion-label>
             </ion-item>
           </ion-list>
         </div>
@@ -70,7 +74,7 @@
               <ion-icon :icon="megaphone" slot="start" />
               <ion-label>Ecrivez-nous ici</ion-label>
             </ion-item>
-            <ion-item @click="open_norm_lnk(paramObj['privacy'])" button>
+            <ion-item @click.stop="open_norm_lnk(paramObj['privacy'])" button>
               <ion-icon :icon="handLeftOutline" slot="start" />
               <ion-label>Politique de confidentialité</ion-label>
             </ion-item>
@@ -94,6 +98,7 @@
       </div>
       <add-momo :is-open="mOpen" :can-back="true" @close="mOpen = false"
         @done="momo => (paramObj['momo'] = momo, mOpen = false)" />
+      <cible-comp :is-home="false" :is-open="cOpen" :cible="cibleObj" @close="cOpen = false" />
     </ion-content>
   </ion-page>
 </template>
@@ -131,24 +136,32 @@
 
 <script setup lang="ts">
 import AddMomo from '@/components/AddMomo.vue';
+import CibleComp from '@/components/CibleComp.vue';
 import { access_tok } from '@/global/utils';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonListHeader, IonLabel, IonItem, IonIcon, IonButton, onIonViewDidEnter, IonSpinner } from '@ionic/vue';
 import axios from 'axios';
-import { aperture, bonfire, call, handLeftOutline, information, megaphone, person, phonePortrait, radioButtonOn, ribbon, swapHorizontal, wallet, radioButtonOff } from 'ionicons/icons';
+import { aperture, bonfire, call, handLeftOutline, information, megaphone, person, phonePortrait, radioButtonOn, ribbon, swapHorizontal, wallet, radioButtonOff, shareSocial } from 'ionicons/icons';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-
+const cOpen = ref(false)
 const paramObj = ref()
 const mOpen = ref(false)
 const router = useRouter()
+const cibleObj = ref()
+const cible_stats = async () => {
+  const resp = await axios.get('api/cible_stats/' + paramObj.value['story'])
+  if(resp.data['done']) {
+    cibleObj.value = resp.data['result']
+    
+  }
+}
 const get_params = async () => {
   const resp = await axios.get("api/get_params/", {
     headers : {
       Authorization : `Bearer ${await access_tok(router, undefined)}`
     }
   })
-  if(resp.data['done']) paramObj.value = resp.data['result']
+  if(resp.data['done']) paramObj.value = resp.data['result'], cible_stats()
 }
 
 const open_norm_lnk = (lnk: string) => {

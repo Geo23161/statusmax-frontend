@@ -80,6 +80,7 @@
         </photo-provider>
       </div>
       <vid-player :isOpen="vOpen" :urlP="cUrl" @close="vOpen = false" />
+      <cible-comp :isOpen="cOpen" @close="cOpen = false" :isHome="true" :cible="cibleObj" />
     </ion-content>
   </ion-page>
 </template>
@@ -170,7 +171,8 @@ import {
   IonSelect,
   IonSelectOption,
   IonRange,
-  IonIcon
+  IonIcon,
+onIonViewDidLeave
 } from "@ionic/vue";
 import { arrowBack, location, arrowForward, aperture, diamond, play } from "ionicons/icons";
 import { ref, watch, computed } from "vue";
@@ -178,6 +180,7 @@ import { useRoute, useRouter } from "vue-router";
 import { show_alert, showLoading, access_tok } from "@/global/utils";
 import axios from "axios"
 import VidPlayer from "../components/VidPlayer.vue";
+import CibleComp from "@/components/CibleComp.vue";
 
 const click_img = (id: string) => {
   document.getElementById(id+ ':img')?.click();
@@ -186,12 +189,12 @@ const click_img = (id: string) => {
 const cUrl = ref("")
 const vOpen = ref(false)
 const router = useRouter()
-
+const story = ref(0)
 const all_imgs = computed(() => {
   let imgs = [] as any[];
   for(const hom of homeObj.value){
     imgs = imgs.concat(hom.medias.filter((e : any) => !e.is_vid));
-
+    
   }
   return imgs
 
@@ -224,7 +227,6 @@ const imgs = [
 
 const is_first = ref(true);
 const homeObj = ref<any[]>([]);
-
 const get_home = async () => {
   const load = is_first.value ?(await showLoading("Patienter...")) : undefined;
   const resp = await axios.get("api/get_home/", {
@@ -234,11 +236,36 @@ const get_home = async () => {
   });
   if(load) load.dismiss()
   homeObj.value = resp.data['result'];
-  is_first.value = false
+  is_first.value = false;
+  story.value = resp.data['story']
+  cible_stats()
+}
+
+const cOpen = ref(false)
+const interval = setInterval(() => {
+  if(story.value) cible_stats()
+}, 15000)
+const cibleObj = ref()
+watch(cibleObj, (newc, oldc) => {
+  if(newc['good']) clearInterval(interval), cOpen.value = false;
+  else cOpen.value = true
+}, {deep : true})
+
+const cible_stats = async () => {
+  const resp = await axios.get('api/cible_stats/' + story.value)
+  if(resp.data['done']) {
+    cibleObj.value = resp.data['result']
+    
+  }
 }
 
 onIonViewDidEnter(() => {
   get_home()
+  
+})
+
+onIonViewDidLeave(() => {
+  clearInterval(interval)
 })
 
 </script>

@@ -33,7 +33,7 @@
 								</div>
 								<ion-card-header>
 									<ion-card-title> {{ p.get_title }}</ion-card-title>
-									<ion-card-subtitle>{{ format_bonus(p.get_bonus) }}</ion-card-subtitle>
+									<ion-card-subtitle>{{ format_bonus(p) }}</ion-card-subtitle>
 								</ion-card-header>
 
 								<ion-button @click="cPost = p, pOpen = true" fill="clear" >{{ slug == 'proposed' ? "Accepter de poster" : "Ouvrir ce post"}}</ion-button>
@@ -220,8 +220,8 @@ const getHomeFromSlug = async () => {
 }
 
 const price = ref()
-const format_bonus = (bonus : any) => {
-	return `Gain de ${parseInt(price.value) + parseInt(bonus)} F/10vues`;
+const format_bonus = (post : any) => {
+	return `Gain de ${parseInt(post.price_10)} F/10vues`;
 }
 
 const route = useRoute();
