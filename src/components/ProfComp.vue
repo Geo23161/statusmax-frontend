@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { defineComponent, defineProps, ref, defineEmits, watch } from "vue";
+import { defineComponent, defineProps, ref, defineEmits, watch, toRef } from "vue";
 import {
   IonList,
   IonItem,
@@ -65,6 +65,7 @@ export default defineComponent({
   },
   setup(prop, { emit }) {
     const emits = defineEmits(["close", "done"]);
+    const pOpen = toRef(prop, "isOpen");
     const close = () => {
       emit("close");
     };
@@ -99,9 +100,9 @@ export default defineComponent({
       	})
       if(resp.data['done']) interests.value = resp.data['result']
     };
-
-    get_interests()
-
+    watch(pOpen, (newp, oldp) => {
+      if(newp) get_interests();
+    })
     return {
       close,
       done,
